@@ -9,14 +9,30 @@ public class Node
     public Vector3 position { get; private set; }
     public List<Node> neighborsList = new List<Node>();
 
+    public Node parent;
+
+    public float gCost;
+    public float hCost;
+
+    public float fCost
+    {
+        get
+        {
+            return gCost + hCost;
+        }
+    }
+
     private Transform box;
     private Color color;
+
+    public bool IsClean {get; private set;}
 
     public Node(Vector3 _position)
     {
         position = _position;
         // Создаём на этом месте куб
         box = Object.Instantiate(NodeSetting.nodeBox, _position, Quaternion.identity, NodeSetting.boxesBase);
+        IsClean = false;
         SetColor(NodeSetting.rawNodeColor);
     }
 
@@ -30,29 +46,22 @@ public class Node
         if(!neighborsList.Exists(x => x.position == neighborNode.position))
         {
             neighborsList.Add(neighborNode);
-            box.GetComponent<Test>().Add(neighborNode);
+            box.GetComponent<NodeView>().Add(neighborNode);
         }
 
-        for(int i = 0, count = 0; i < neighborsList.Count; i++)
+        if (neighborsList.Count == MAX_NEIGHBORS)
         {
-            if (neighborsList[i].position.y <= position.y)
-            {
-                count++;
-            }
-            if (count == 4)
-            {
-                SetColor(NodeSetting.nodeColor);
-                break;
-            }
+            IsClean = true;
+            SetColor(NodeSetting.nodeColor);
         }
     }
 
     public void DisconnectNode()
     {
         // Удалить box
-        if(box.GetComponent<Test>() != null)
+        if(box.GetComponent<NodeView>() != null)
         {
-            box.GetComponent<Test>().Destroy();
+            box.GetComponent<NodeView>().Destroy();
         }
         // Оповестить всех соседей об удалении этого Node
         for (int i = 0; i < neighborsList.Count; i++)

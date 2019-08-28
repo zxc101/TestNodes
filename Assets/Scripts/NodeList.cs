@@ -5,7 +5,12 @@ using UnityEngine;
 public class NodeList
 {
     private static List<Node> rawNodeList = new List<Node>();
-    private static List<Node> nodeList = new List<Node>();
+    public static List<Node> nodeList = new List<Node>();
+
+    public static int Count
+    {
+        get => rawNodeList.Count + nodeList.Count;
+    }
 
     /// <summary>
     /// Добавляет Node
@@ -43,41 +48,24 @@ public class NodeList
             // Если нету в rawNodeList то ...
             if (!rawNodeList.Exists(x => x.position == position))
             {
-                // Добавляет в rawNodeList
-                rawNodeList.Add(new Node(position));
+                node = new Node(position);
                 // Находит соседей
-                FindNeighbors(position, Vector3.right);
-                FindNeighbors(position, Vector3.left);
-                FindNeighbors(position, Vector3.forward);
-                FindNeighbors(position, Vector3.back);
+                FindNeighbors(node, Vector3.right);
+                FindNeighbors(node, Vector3.left);
+                FindNeighbors(node, Vector3.forward);
+                FindNeighbors(node, Vector3.back);
+                rawNodeList.Add(node);
             }
         }
-
-        if (node != null && node.neighborsList.Count == Node.MAX_NEIGHBORS)
-        {
-            rawNodeList.Remove(node);
-            nodeList.Add(node);
-        }
     }
 
-    public static int Count()
-    {
-        return rawNodeList.Count + nodeList.Count;
-    }
-
-    private static void FindNeighbors(Vector3 position, Vector3 direction)
+    private static void FindNeighbors(Node node, Vector3 direction)
     {
         RaycastHit hit;
 
-        if (!Physics.Raycast(position, direction, out hit, NodeSetting.wolkDistance, NodeSetting.layerMask))
+        if (!Physics.Raycast(node.position, direction, out hit, NodeSetting.wolkDistance, NodeSetting.layerMask))
         {
-            Node startNode = rawNodeList.Find(x => x.position == position);
-            if(startNode == null)
-            {
-                startNode = nodeList.Find(x => x.position == position);
-            }
-
-            Vector3 sidePosition = position + direction * NodeSetting.wolkDistance;
+            Vector3 sidePosition = node.position + direction * NodeSetting.wolkDistance;
             
             Node neighborNode = rawNodeList.Find(x => x.position == sidePosition);
 
@@ -89,8 +77,18 @@ public class NodeList
             if (neighborNode != null)
             {
                 // Записываем в соседей
-                startNode.ConnectNode(neighborNode);
-                neighborNode.ConnectNode(startNode);
+                node.ConnectNode(neighborNode);
+                if (node.IsClean && !nodeList.Exists(n => n == node))
+                {
+                    rawNodeList.Remove(node);
+                    nodeList.Add(node);
+                }
+                neighborNode.ConnectNode(node);
+                if (neighborNode.IsClean && !nodeList.Exists(n => n == neighborNode))
+                {
+                    rawNodeList.Remove(neighborNode);
+                    nodeList.Add(neighborNode);
+                }
             }
             else
             {
@@ -107,13 +105,44 @@ public class NodeList
                     if (neighborNode != null)
                     {
                         // Записываем в соседей
-                        startNode.ConnectNode(neighborNode);
-                        neighborNode.ConnectNode(startNode);
+                        node.ConnectNode(neighborNode);
+                        if (node.IsClean && !nodeList.Exists(n => n == node))
+                        {
+                            rawNodeList.Remove(node);
+                            nodeList.Add(node);
+                        }
+                        neighborNode.ConnectNode(node);
+                        if (neighborNode.IsClean && !nodeList.Exists(n => n == neighborNode))
+                        {
+                            rawNodeList.Remove(neighborNode);
+                            nodeList.Add(neighborNode);
+                        }
                     }
                 }
             }
         }
     }
 
+    /// <summary>
+    /// Находит ближайший Node или создаёт Node соответствующий заданной позиции
+    /// </summary>
+    /// <param name="position">Проверяемая позиция</param>
+    /// <returns>Node соответствующий заданной позиции</returns>
+    public static Node NearestNode(Vector3 position)
+    {
+        Node nearestNode = nodeList[0];
+        for (int i = 0; i < nodeList.Count; i++)
+        {
+            if (Vector3.Distance(nodeList[i].position, position) < Vector3.Distance(nearestNode.position, position))
+            {
+                nearestNode = nodeList[i];
+            }
+        }
+        return nearestNode;
+    }
 
+    public static List<Node> GetNeighbors(Vector3 position)
+    {
+        return NearestNode(position).neighborsList;
+    }
 }

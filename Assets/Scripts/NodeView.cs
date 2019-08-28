@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class NodeView : MonoBehaviour
 {
     public List<Vector3> neighborsList = new List<Vector3>();
 

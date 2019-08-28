@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class NodeMatrix : MonoBehaviour
 {
+    private void Awake()
+    {
+        //Debug.Log(NodeSetting.phone.position);
+        //transform.position = NodeSetting.phone.position;
+    }
+
     public void Start()
     {
+        transform.position = NodeSetting.phone.position + Vector3.up * 3;
         CreateNodes();
     }
 
