@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NodeList
 {
-    private static List<Node> rawNodeList = new List<Node>();
+    public static List<Node> rawNodeList = new List<Node>();
     public static List<Node> nodeList = new List<Node>();
 
     public static int Count
@@ -50,10 +50,14 @@ public class NodeList
             {
                 node = new Node(position);
                 // Находит соседей
-                FindNeighbors(node, Vector3.right);
-                FindNeighbors(node, Vector3.left);
                 FindNeighbors(node, Vector3.forward);
+                FindNeighbors(node, Vector3.forward + Vector3.right);
+                FindNeighbors(node, Vector3.right);
+                FindNeighbors(node, Vector3.right + Vector3.back);
                 FindNeighbors(node, Vector3.back);
+                FindNeighbors(node, Vector3.back + Vector3.left);
+                FindNeighbors(node, Vector3.left);
+                FindNeighbors(node, Vector3.left + Vector3.forward);
                 rawNodeList.Add(node);
             }
         }

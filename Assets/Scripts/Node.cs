@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node
+public class Node : IHeapItem<Node>
 {
-    public const int MAX_NEIGHBORS = 4;
+    public const int MAX_NEIGHBORS = 8;
 
     public Vector3 position { get; private set; }
     public List<Node> neighborsList = new List<Node>();
@@ -14,18 +14,16 @@ public class Node
     public float gCost;
     public float hCost;
 
-    public float fCost
-    {
-        get
-        {
-            return gCost + hCost;
-        }
-    }
-
     private Transform box;
     private Color color;
+    private int heapIndex;
 
+    public float fCost { get => gCost + hCost; }
     public bool IsClean {get; private set;}
+    public int HeapIndex {
+        get => heapIndex;
+        set { heapIndex = value; }
+    }
 
     public Node(Vector3 _position)
     {
@@ -71,5 +69,15 @@ public class Node
                 neighborsList[i].neighborsList.Remove(this);
             }
         }
+    }
+
+    public int CompareTo(Node nodeToCompare)
+    {
+        int compare = fCost.CompareTo(nodeToCompare.fCost);
+        if (compare == 0)
+        {
+            compare = hCost.CompareTo(nodeToCompare.hCost);
+        }
+        return -compare;
     }
 }
