@@ -10,7 +10,9 @@ public class Pet : MonoBehaviour
 
     private Animator anim;
     private Stack<Vector3> path;
-    private float speed;
+    private float speedMove;
+    private float speedRoteta;
+    private float timeRotate = 4;
 
     private Vector3 Goal
     {
@@ -35,7 +37,9 @@ public class Pet : MonoBehaviour
 
     private void Start()
     {
-        if(currentGoal == null)
+        speedRoteta = 0;
+
+        if (currentGoal == null)
         {
             Debug.Log("У питомца отсутствует цель");
             return;
@@ -49,7 +53,6 @@ public class Pet : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log(NodeList.nodeList.Count);
             if (currentGoal != null)
             {
                 path = Pathfinding.FindPath(transform.position, currentGoal.position);
@@ -64,7 +67,7 @@ public class Pet : MonoBehaviour
                         MoveToTarget(currentGoal.position);
                     }
                     GetOtherTarget();
-                    //yield return StartCoroutine(Sit(Goal));
+                    yield return StartCoroutine(Sit(Goal));
                 }
             }
             //else
@@ -74,32 +77,40 @@ public class Pet : MonoBehaviour
         }
     }
 
-    //private IEnumerator Sit(Vector3 target)
-    //{
-    //    Debug.Log("Sit");
-    //    yield return new WaitForSeconds(1);
-    //}
+    private IEnumerator Sit(Vector3 target)
+    {
+        Debug.Log("Sit");
+        yield return new WaitForSeconds(1);
+    }
 
     private IEnumerator MoveToTarget(Vector3 target)
     {
         float hight = Goal.y;
         if (transform.position.y < hight + 0.1f && transform.position.y < hight - 0.1f)
         {
-            if(RotateToTarget(target) > 0)
+            if(Mathf.Abs(RotateToTarget(Goal)) > 12)
             {
-                anim.SetFloat("Rotate", RotateToTarget(target));
-                anim.SetFloat("Distance", 0);
+                speedRoteta = Mathf.Lerp(speedRoteta, RotateToTarget(Goal), Time.fixedDeltaTime * timeRotate);
+                anim.SetFloat("Rotate", speedRoteta);
+                anim.SetFloat("Speed", 0);
             }
-            anim.SetBool("IsJumpUp", true);
+            else
+            {
+                anim.SetBool("IsJumpUp", true);
+            }
         }
         else if (transform.position.y > hight + 0.1f && transform.position.y > hight - 0.1f)
         {
-            if (RotateToTarget(target) > 0)
+            if (Mathf.Abs(RotateToTarget(Goal)) > 12)
             {
-                anim.SetFloat("Rotate", RotateToTarget(target));
-                anim.SetFloat("Distance", 0);
+                speedRoteta = Mathf.Lerp(speedRoteta, RotateToTarget(Goal), Time.fixedDeltaTime * timeRotate);
+                anim.SetFloat("Rotate", speedRoteta);
+                anim.SetFloat("Speed", 0);
             }
-            anim.SetBool("IsJumpDown", true);
+            else
+            {
+                anim.SetBool("IsJumpDown", true);
+            }
         }
         else
         {
@@ -117,30 +128,38 @@ public class Pet : MonoBehaviour
 
             if (Physics.Raycast(eye.position , transform.forward, out hit, 1, NodeSetting.layerMask))
             {
-                Debug.Log(hit.point);
                 float dist = Vector3.Distance(transform.position, hit.point);
+                speedRoteta = Mathf.Lerp(speedRoteta, RotateToTarget(target), Time.fixedDeltaTime * timeRotate);
                 if (dist < 0.2f)
                 {
-                    anim.SetFloat("Distance", 0);
-                    anim.SetFloat("Rotate", RotateToTarget(target));
+                    anim.SetFloat("Speed", 0);
+                    anim.SetFloat("Rotate", speedRoteta);
                 }
                 else if (dist > 0.2f && dist < 1)
                 {
-                    Mathf.Clamp(speed, 0, 0.5f);
-                    anim.SetFloat("Distance", speed);
-                    anim.SetFloat("Rotate", RotateToTarget(target));
+                    Mathf.Clamp(speedMove, 0, 2f);
+                    anim.SetFloat("Speed", speedMove);
+                    anim.SetFloat("Rotate", speedRoteta);
                 }
                 else
                 {
-                    Mathf.Clamp(speed, 0, 1);
-                    anim.SetFloat("Distance", speed);
+                    speedMove = 4;
+                    anim.SetFloat("Speed", speedMove);
                 }
             }
             else
             {
-                anim.SetFloat("Rotate", RotateToTarget(target));
-                DistanceToTarget(currentGoal.position);
-                anim.SetFloat("Distance", speed);
+                if ((Mathf.Abs(transform.forward.x) == 0.7f && Mathf.Abs(transform.forward.z) == 0.7f) ||
+                    (Mathf.Abs(transform.forward.x) == 1 && Mathf.Abs(transform.forward.z) == 1))
+                {
+                    speedRoteta = 0;
+                }
+                else
+                {
+                    speedRoteta = Mathf.Lerp(speedRoteta, RotateToTarget(target), Time.fixedDeltaTime * timeRotate);
+                }
+                anim.SetFloat("Rotate", speedRoteta);
+                anim.SetFloat("Speed", Speed);
             }
         }
         yield return new WaitForFixedUpdate();
@@ -165,26 +184,21 @@ public class Pet : MonoBehaviour
         return angleRotate;
     }
 
-    private void DistanceToTarget(Vector3 target)
+    private float Speed
     {
-        float distance = Vector3.Distance(transform.position, target);
-
-        speed = distance;
-
-        if (distance < 1 && distance > 0.2f)
+        get
         {
-            speed = 0.5f;
-        }
-        if (distance < 0.2f)
-        {
-            speed = 0;
+            float speed = Vector3.Distance(transform.position, currentGoal.position);
+            speed = Mathf.Clamp(speed, 1, 2);
+            return speed;
         }
     }
 
     private void GetOtherTarget()
     {
-        anim.SetFloat("Rotate", 0);
-        anim.SetFloat("Distance", 0);
+        speedRoteta = 0;
+        anim.SetFloat("Rotate", speedRoteta);
+        anim.SetFloat("Speed", 0);
 
         if (exploreTerritory)
         {

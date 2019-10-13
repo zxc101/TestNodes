@@ -14,47 +14,6 @@ public class NodeList
         get => rawNodeList.Count + nodeList.Count;
     }
 
-    //public static void NodeUpdate(Vector3 position)
-    //{
-    //    Node node = new Node(position);
-    //    // Находит соседей
-    //    FindNeighbors(node, Vector3.forward);
-    //    FindNeighbors(node, Vector3.forward + Vector3.right);
-    //    FindNeighbors(node, Vector3.right);
-    //    FindNeighbors(node, Vector3.right + Vector3.back);
-    //    FindNeighbors(node, Vector3.back);
-    //    FindNeighbors(node, Vector3.back + Vector3.left);
-    //    FindNeighbors(node, Vector3.left);
-    //    FindNeighbors(node, Vector3.left + Vector3.forward);
-
-    //    if (!nodeList.Exists(x => x.position == position) &&
-    //        !rawNodeList.Exists(x => x.position == position))
-    //    {
-    //        rawNodeList.Add(node);
-    //        AddNodeToView(position);
-    //    }
-    //    else
-    //    {
-    //        if(nodeList.Exists(x => x.position == position) &&
-    //            !rawNodeList.Exists(x => x.position == position) &&
-    //            !node.IsClean)
-    //        {
-    //            nodeList.Remove(node);
-    //            rawNodeList.Add(node);
-    //            viewNodes.Find(x => x.position == node.position).GetComponent<Renderer>().material.color = NodeSetting.rawNodeColor;
-
-    //        }
-    //        if(rawNodeList.Exists(x => x.position == position) &&
-    //            !nodeList.Exists(x => x.position == position) &&
-    //            node.IsClean)
-    //        {
-    //            nodeList.Remove(node);
-    //            rawNodeList.Add(node);
-    //            viewNodes.Find(x => x.position == node.position).GetComponent<Renderer>().material.color = NodeSetting.nodeColor;
-    //        }
-    //    }
-    //}
-
     /// <summary>
     /// Добавляет Node
     /// </summary>
@@ -107,8 +66,9 @@ public class NodeList
         FindNeighbors(node, Vector3.left);
         FindNeighbors(node, Vector3.left + Vector3.forward);
 
-        rawNodeList.Add(node);
+        //rawNodeList.Add(node);
 
+        AddNodeToList(ref rawNodeList, node);
         //AddNodeToView(position);
     }
 
@@ -122,15 +82,26 @@ public class NodeList
     //    }
     //}
 
+    private static void AddNodeToList(ref List<Node> list, Node node)
+    {
+        if(list.Count > 1000)
+        {
+            Debug.Log("zxc");
+            list.Remove(list.Find(x => Vector3.Distance(x.position, node.position) > 1));
+        }
+
+        list.Add(node);
+    }
+
     private static void FindNeighbors(Node node, Vector3 direction)
     {
         RaycastHit hit;
 
+        Vector3 sidePosition = node.position + direction * NodeSetting.wolkDistance;
+
         // Если не сталкивается со стенкой
         if (!Physics.Raycast(node.position, direction, out hit, NodeSetting.wolkDistance, NodeSetting.layerMask))
-        {
-            Vector3 sidePosition = node.position + direction * NodeSetting.wolkDistance;
-            
+        {            
             // Проверяем на присутствие Node с не сырых нодах с определённой стороны
             Node neighborNode = rawNodeList.Find(x => x.position == sidePosition);
 
@@ -152,6 +123,35 @@ public class NodeList
                 ConnectSideDownNodes(sidePosition, node, neighborNode);
             }
         }
+        else
+        {
+            // Удаляем ноды из готовых если рядом появляется стенка
+            if (nodeList.Exists(x => x.position == node.position))
+            {
+                nodeList.Remove(node);
+                //rawNodeList.Add(node);
+                AddNodeToList(ref rawNodeList, node);
+            }
+
+            // Изменяем цвет на raw
+            //Transform viewNode = viewNodes.Find(x => x.position == node.position);
+            //if(viewNode != null)
+            //{
+            //    viewNode.GetComponent<Renderer>().material.color = NodeSetting.rawNodeColor;
+            //}
+
+            // Если скозь стенку есть нод стоящий в nodeList
+            Node neighborNode = nodeList.Find(x => x.position == sidePosition);
+
+            // Удаляем и его
+            if(neighborNode != null)
+            {
+                nodeList.Remove(neighborNode);
+                //rawNodeList.Add(neighborNode);
+                AddNodeToList(ref rawNodeList, neighborNode);
+                //viewNodes.Find(x => x.position == neighborNode.position).GetComponent<Renderer>().material.color = NodeSetting.rawNodeColor;
+            }
+        }
     }
 
     private static void ConnectSideNodes(Node node1, Node node2)
@@ -164,7 +164,8 @@ public class NodeList
         {
             // Переносим его из rawNodeList в nodeList
             rawNodeList.Remove(node1);
-            nodeList.Add(node1);
+            //nodeList.Add(node1);
+            AddNodeToList(ref nodeList, node1);
             //viewNodes.Find(x => x.position == node1.position).GetComponent<Renderer>().material.color = NodeSetting.nodeColor;
         }
 
@@ -176,7 +177,8 @@ public class NodeList
         {
             // Переносим его из rawNodeList в nodeList
             rawNodeList.Remove(node2);
-            nodeList.Add(node2);
+            //nodeList.Add(node2);
+            AddNodeToList(ref nodeList, node2);
             //viewNodes.Find(x => x.position == node2.position).GetComponent<Renderer>().material.color = NodeSetting.nodeColor;
         }
     }
