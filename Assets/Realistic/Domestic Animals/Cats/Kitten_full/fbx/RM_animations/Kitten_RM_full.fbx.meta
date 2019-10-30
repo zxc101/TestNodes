@@ -151,7 +151,7 @@ ModelImporter:
     7400076: Arm_Cat|Jump_trot_RM
     7400078: Arm_Cat|Jump_up
     7400080: Arm_Cat|Jump_up_long
-    7400082: Arm_Cat|LieDown
+    7400082: Arm_Cat|Lie
     7400084: Arm_Cat|Rotate_180_L
     7400086: Arm_Cat|Rotate_180_R
     7400088: Arm_Cat|Rotate_90_L
@@ -162,9 +162,9 @@ ModelImporter:
     7400098: Arm_Cat|Run_left_RM
     7400100: Arm_Cat|Run_right_RM
     7400102: Arm_Cat|Run_stop_RM
-    7400104: Arm_Cat|Sit_idle_1
-    7400106: Arm_Cat|Sit_idle_2
-    7400108: Arm_Cat|Sit_lie
+    7400104: Arm_Cat|Sit_1
+    7400106: Arm_Cat|Sit_2
+    7400108: Arm_Cat|SitLie
     7400110: Arm_Cat|Sit_wash
     7400112: Arm_Cat|Sleep
     7400114: Arm_Cat|Swim_back_L_RM
@@ -198,6 +198,13 @@ ModelImporter:
     7400170: Arm_Cat|Jump_up_finish
     7400172: Arm_Cat|Jump_down_stop
     7400174: Arm_Cat|Jump_down_mid
+    7400176: Arm_Cat|LieDown
+    7400178: Arm_Cat|LieUp
+    7400180: Arm_Cat|LieSit
+    7400182: Arm_Cat|IdleSit
+    7400184: Arm_Cat|SitIdle
+    7400186: Arm_Cat|SleepDown
+    7400188: Arm_Cat|SleepUp
     9500000: //RootNode
     13700000: Kitten_LOD0
   externalObjects:
@@ -1354,10 +1361,10 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Arm_Cat|LieDown
+      name: Arm_Cat|Lie
       takeName: Arm_Cat|Lie
-      firstFrame: 0
-      lastFrame: 23
+      firstFrame: 25
+      lastFrame: 125
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -1662,10 +1669,10 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Arm_Cat|Sit_idle_1
+      name: Arm_Cat|Sit_1
       takeName: Arm_Cat|Sit_idle_1
-      firstFrame: 0
-      lastFrame: 140
+      firstFrame: 20
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -1690,7 +1697,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Arm_Cat|Sit_idle_2
+      name: Arm_Cat|Sit_2
       takeName: Arm_Cat|Sit_idle_2
       firstFrame: 0
       lastFrame: 100
@@ -1718,10 +1725,10 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Arm_Cat|Sit_lie
+      name: Arm_Cat|SitLie
       takeName: Arm_Cat|Sit_lie
       firstFrame: 0
-      lastFrame: 50
+      lastFrame: 25
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -1776,8 +1783,8 @@ ModelImporter:
     - serializedVersion: 16
       name: Arm_Cat|Sleep
       takeName: Arm_Cat|Sleep
-      firstFrame: 0
-      lastFrame: 100
+      firstFrame: 20
+      lastFrame: 80
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -2334,34 +2341,6 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Arm_Cat|LieUp
-      takeName: Arm_Cat|Lie
-      firstFrame: 125
-      lastFrame: 150
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: Arm_Cat|Eat_drink_start
       takeName: Arm_Cat|drink
       firstFrame: 0
@@ -2603,6 +2582,202 @@ ModelImporter:
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 0
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Arm_Cat|LieDown
+      takeName: Arm_Cat|Lie
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Arm_Cat|LieUp
+      takeName: Arm_Cat|Lie
+      firstFrame: 125
+      lastFrame: 150
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Arm_Cat|LieSit
+      takeName: Arm_Cat|Sit_lie
+      firstFrame: 25
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Arm_Cat|IdleSit
+      takeName: Arm_Cat|Sit_idle_1
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Arm_Cat|SitIdle
+      takeName: Arm_Cat|Sit_idle_1
+      firstFrame: 120
+      lastFrame: 140
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Arm_Cat|SleepDown
+      takeName: Arm_Cat|Sleep
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Arm_Cat|SleepUp
+      takeName: Arm_Cat|Sleep
+      firstFrame: 80
+      lastFrame: 100
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0

@@ -7,7 +7,7 @@ public struct NodeValues
 {
     public Transform nodeBox;
     public Transform boxesBase;
-    public Transform phone;
+    public Transform pet;
     public Color rawNodeColor;
     public Color nodeColor;
     public float wolkDistance;

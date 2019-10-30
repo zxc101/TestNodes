@@ -6,7 +6,7 @@ public struct NodeSetting
 {
     public static Transform nodeBox;
     public static Transform boxesBase;
-    public static Transform phone;
+    public static Transform pet;
 
     public static Color rawNodeColor;
     public static Color nodeColor;
