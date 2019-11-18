@@ -9,30 +9,27 @@ namespace Pets
     public class GoalManager
     {
         private Pet pet;
+        private Transform goalsParent;
 
         public GoalManager(Pet _pet)
         {
             pet = _pet;
         }
 
-        public void GetOtherGoal()
+        public void ChangeGoal()
         {
-            pet.SpeedMove = 0;
-            pet.SpeedRotate = 0;
-
-            SetGoal();
-        }
-
-        private void SetGoal()
-        {
-            Debug.Log($"ExploreTerritory == {pet.ExploreTerritory}");
-            if (pet.ExploreTerritory)
+            if (pet.NeedSleep > 90 && pet.NeedEat > 90)
             {
-                pet.CurrentGoal.position = SelectNewGoal(NodeList.rawNodeList);
+                pet.RemoveMainGoal();
+                return;
             }
-            else
+            if (pet.NeedSleep < 90 && pet.NeedSleep < pet.NeedEat)
             {
-                pet.CurrentGoal.position = SelectNewGoal(NodeList.nodeList);
+                pet.ChangeMainGoal(pet.Bed);
+            }
+            if (pet.NeedEat < 90 && pet.NeedEat < pet.NeedSleep)
+            {
+                pet.ChangeMainGoal(pet.Feeder);
             }
         }
 

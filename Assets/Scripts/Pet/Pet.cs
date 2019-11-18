@@ -2,7 +2,7 @@
 using UnityEngine;
 
 using Helpers;
-using Nodes;
+using Collections;
 
 namespace Pets
 {
@@ -11,24 +11,40 @@ namespace Pets
         public float TIME_ROTATE => 4;
         public float TIME_MOVE => 4;
 
-        [SerializeField] private Transform currentGoal;
-        [SerializeField] private Transform eye;
-        [SerializeField] private bool exploreTerritory;
+        [Header("Цели")]
+        [SerializeField] private Transform feeder;
+        [SerializeField] private Transform bed;
+        [Header("Потребности")]
+        [SerializeField] [Range(0, 100)] private float needEat;
+        [SerializeField] [Range(0, 100)] private float needSleep;
+        [Tooltip("Префаб для вспомогательных целей")]
+        [SerializeField] private Transform point;
 
+        [Header("Other")]
+        [SerializeField] private Transform eye;
+        
         private float speedMove;
         private float speedRotate;
+        private bool isRotate;
 
+        public Stack<Vector3> Path { get; set; }
+
+        public Transform Feeder => feeder;
+        public Transform Bed => bed;
+        public Transform Point => point;
         public Transform Eye => eye;
-        public Animator Animator => GetComponent<Animator>();
-        public Stack<Vector3> Path => Pathfinding.FindPath(transform.position, CurrentGoal.position);
-        public float AngleToGoal => CurrentGoal == null ? 0 : MathHelper.Angle(transform, CurrentGoal.position);
-        public bool ExploreTerritory => exploreTerritory;
+        public float NeedEat => needEat;
+        public float NeedSleep => needSleep;
+        public float AngleToGoal => Goals.IsEmpty ? 0 : MathHelper.Angle(transform, Goals.First.position);
 
-        public Transform CurrentGoal { get => currentGoal; set => currentGoal = value; }
+        public Deque<Transform> Goals { get; set; }
         public float SpeedMove { get => speedMove; set { speedMove = value; Animator.SetFloat("Speed", value); } }
         public float SpeedRotate { get => speedRotate; set { speedRotate = value; Animator.SetFloat("Rotate", value); } }
 
         public Transform Transform { get; private set; }
+        public Animator Animator { get; private set; }
+        public CapsuleCollider CapsuleCollider { get; private set; }
+        public Rigidbody Rigidbody { get; private set; }
 
         public AnimManager AnimManager { get; private set; }
         public GoalManager GoalManager { get; private set; }
@@ -36,9 +52,17 @@ namespace Pets
         public MoveManager MoveManager { get; private set; }
         public SitManager SitManager { get; private set; }
 
+        private void InitVal()
+        {
+            Goals = new Deque<Transform>();
+        }
+
         private void InitComponents()
         {
             Transform = transform;
+            Animator = GetComponent<Animator>();
+            CapsuleCollider = GetComponent<CapsuleCollider>();
+            Rigidbody = GetComponent<Rigidbody>();
         }
 
         private void InitManagers()
@@ -52,11 +76,12 @@ namespace Pets
 
         private void Start()
         {
+            InitVal();
             InitComponents();
             InitManagers();
         }
 
-        public Vector3 Goal
+        public Vector3 NextPosition
         {
             get
             {
@@ -75,22 +100,62 @@ namespace Pets
         {
             get
             {
-                float MAX_Speed = Vector3.Distance(transform.position, currentGoal.position);
-                MAX_Speed = Mathf.Clamp(MAX_Speed, 1, 2);
+                float MAX_Speed = Goals.IsEmpty ? 0 : Vector3.Distance(transform.position, Goals.First.position);
+                MAX_Speed = Mathf.Clamp(MAX_Speed, 0, 2);
                 return MAX_Speed;
             }
         }
 
-        private void OnDrawGizmos()
+        public void ClearAllGoals()
         {
-            if (Path != null)
+            if (Goals != null)
             {
-                Gizmos.color = Color.red;
-                Vector3[] gizmosPath = Path.ToArray();
-                for (int i = 0; i < gizmosPath.Length; i++)
+                RemoveGoals(Goals.Count);
+            }
+        }
+
+        public void RemoveAllHalperGoals()
+        {
+            RemoveGoals(Goals.Count - 1);
+        }
+
+        public void ChangeMainGoal(Transform newPoint)
+        {
+            if (Goals != null && !Goals.IsEmpty)
+                Destroy(Goals.RemoveLast().gameObject);
+            Goals.AddLast(Instantiate(Point, newPoint.position, Quaternion.identity));
+        }
+        
+        public void RemoveMainGoal()
+        {
+            if (Goals != null && !Goals.IsEmpty)
+            {
+                if (Goals.Last.position == bed.position ||
+                Goals.Last.position == feeder.position)
                 {
-                    Gizmos.DrawCube(gizmosPath[i], Vector3.one * 0.2f);
+                    Destroy(Goals.RemoveLast().gameObject);
                 }
+            }
+        }
+
+        private void RemoveGoals(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                RemoveGoal();
+            }
+        }
+
+        private void RemoveGoal()
+        {
+            Destroy(Goals.RemoveFirst().gameObject);
+        }
+
+        private void OnTriggerEnter(Collider collider)
+        {
+            if(collider.tag == "Goal")
+            {
+                if (Goals != null && !Goals.IsEmpty) RemoveGoal();
             }
         }
     }

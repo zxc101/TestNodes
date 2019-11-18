@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Nodes
 {
-    public class Pathfinding
+    public class Pathfinder
     {
         public static Stack<Vector3> FindPath(Vector3 startPos, Vector3 targetPos)
         {

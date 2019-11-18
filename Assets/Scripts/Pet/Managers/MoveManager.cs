@@ -15,7 +15,9 @@ namespace Pets
 
         public IEnumerator Start()
         {
-            float hight = pet.Goal.y;
+            if (pet.Path == null) yield return new WaitForFixedUpdate();
+
+            float hight = pet.NextPosition.y;
             if (pet.Transform.position.y < hight + 0.1f && pet.Transform.position.y < hight - 0.1f)
             {
                 pet.JumpManager.Jump(DirectionY.Up);
@@ -31,20 +33,21 @@ namespace Pets
             yield return new WaitForFixedUpdate();
         }
 
+        public void Stop()
+        {
+            pet.SpeedMove = 0;
+            pet.SpeedRotate = 0;
+        }
+
         private void Move(float hight)
         {
             StabilizationY(hight);
+            CorrectMoveSpeed();
+        }
 
-            RaycastHit hit;
-
-            if (Physics.Raycast(pet.Eye.position, pet.transform.forward, out hit, 1, NodeSetting.layerMask))
-            {
-                SlowdownFrontItem(hit.point);
-            }
-            else
-            {
-                CorrectMoveSpeed();
-            }
+        private bool IsDirectionWall(out RaycastHit hit, Vector3 direction)
+        {
+            return Physics.Raycast(pet.Eye.position, direction, out hit, 1, NodeSetting.layerMask);
         }
 
         private void StabilizationY(float hight)
@@ -60,26 +63,6 @@ namespace Pets
             }
         }
 
-        private void SlowdownFrontItem(Vector3 itemPosition)
-        {
-            float dist = Vector3.Distance(pet.transform.position, itemPosition);
-
-            if (dist < 0.5f)
-            {
-                pet.SpeedMove = 0;
-                //float angle;
-
-                //if (pet.Goal != null) angle = MathHelper.Angle(pet.transform, pet.Goal) == 0 ? 1 : MathHelper.Angle(pet.transform, pet.Goal);
-                //else angle = MathHelper.Angle(pet.transform, itemPosition) == 0 ? 1 : MathHelper.Angle(pet.transform, itemPosition);
-
-                //pet.SpeedRotate = Mathf.Lerp(pet.SpeedRotate, angle, Time.fixedDeltaTime * pet.TIME_ROTATE);
-            }
-            else
-            {
-                pet.SpeedMove = 1;
-            }
-        }
-
         private void CorrectMoveSpeed()
         {
             if ((Mathf.Abs(pet.transform.forward.x) == 0.7f && Mathf.Abs(pet.transform.forward.z) == 0.7f) ||
@@ -89,10 +72,10 @@ namespace Pets
             }
             else
             {
-                pet.SpeedRotate = Mathf.Lerp(pet.SpeedRotate, pet.AngleToGoal, Time.fixedDeltaTime * pet.TIME_ROTATE);
+                pet.SpeedRotate = Mathf.Lerp(pet.SpeedRotate, MathHelper.Angle(pet.Transform, pet.NextPosition), Time.fixedDeltaTime * pet.TIME_ROTATE);
             }
 
-            pet.SpeedMove = pet.MaxSpeed;
+            pet.SpeedMove = 2;
         }
     }
 }

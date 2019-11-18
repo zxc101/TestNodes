@@ -13,11 +13,8 @@ public class Settings : MonoBehaviour
 
     private void Node()
     {
-        NodeSetting.nodeBox = node.nodeBox;
         NodeSetting.boxesBase = node.boxesBase;
         NodeSetting.pet = node.pet;
-        NodeSetting.rawNodeColor = node.rawNodeColor;
-        NodeSetting.nodeColor = node.nodeColor;
         NodeSetting.wolkDistance = node.wolkDistance;
         NodeSetting.jumpDistance = node.jumpDistance;
         NodeSetting.count = node.count;

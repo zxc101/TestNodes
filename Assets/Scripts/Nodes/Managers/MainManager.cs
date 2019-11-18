@@ -7,6 +7,7 @@ namespace Nodes
     public class MainManager : MonoBehaviour
     {
         [SerializeField] private NodeMatrix matrix;
+        [SerializeField] private bool isDrawNodes;
 
         private void Start()
         {
@@ -19,8 +20,35 @@ namespace Nodes
         {
             while (true)
             {
-                matrix.MoveManager.Move();
+                if (matrix.isActiveAndEnabled)
+                {
+                    matrix.MoveManager.Move();
+                }
                 yield return new WaitForFixedUpdate();
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (isDrawNodes)
+            {
+                if (NodeList.nodeList != null)
+                {
+                    Gizmos.color = Color.green;
+                    for (int i = 0; i < NodeList.nodeList.Count; i++)
+                    {
+                        Gizmos.DrawCube(NodeList.nodeList[i].position, Vector3.one * 0.05f);
+                    }
+                }
+
+                if (NodeList.rawNodeList != null)
+                {
+                    Gizmos.color = Color.yellow;
+                    for (int i = 0; i < NodeList.rawNodeList.Count; i++)
+                    {
+                        Gizmos.DrawCube(NodeList.rawNodeList[i].position, Vector3.one * 0.05f);
+                    }
+                }
             }
         }
     }

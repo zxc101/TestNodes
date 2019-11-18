@@ -5,11 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public struct NodeValues
 {
-    public Transform nodeBox;
     public Transform boxesBase;
     public Transform pet;
-    public Color rawNodeColor;
-    public Color nodeColor;
     public float wolkDistance;
     public float jumpDistance;
     public int count;
