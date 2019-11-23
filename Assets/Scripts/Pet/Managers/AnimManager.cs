@@ -25,5 +25,15 @@ namespace Pets
                     break;
             }
         }
+
+        public void Need(string name, bool isNeed)
+        {
+            pet.Animator.SetBool(name, isNeed);
+        }
+
+        public bool IsNeed(string name)
+        {
+            return pet.Animator.GetBool(name);
+        }
     }
 }

@@ -11,8 +11,6 @@ namespace Pets
 
         private void Start()
         {
-            pet.SpeedRotate = 0;
-            
             StartCoroutine(CFixedUpdate());
         }
 

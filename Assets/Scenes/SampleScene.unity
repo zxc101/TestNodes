@@ -1005,7 +1005,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427298744}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -1159,6 +1159,10 @@ PrefabInstance:
       value: Kitten
       objectReference: {fileID: 0}
     - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
       propertyPath: nextGoal
       value: 
       objectReference: {fileID: 0}
@@ -1189,11 +1193,11 @@ PrefabInstance:
       objectReference: {fileID: 1719020636}
     - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
       propertyPath: needEat
-      value: 100
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
       propertyPath: needSleep
-      value: 100
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
       propertyPath: feeder
@@ -1203,6 +1207,106 @@ PrefabInstance:
       propertyPath: bed
       value: 
       objectReference: {fileID: 1719020636}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: timeEat
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: NowNeedEat
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: NowNeedSleep
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: timeAwake
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: timeStarving
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: timeSleep
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[0].prefab
+      value: 
+      objectReference: {fileID: 1427298748}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[0].criticalValue
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[0].value
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[1].prefab
+      value: 
+      objectReference: {fileID: 1719020636}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[0].name
+      value: IsEat
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[1].name
+      value: IsSleep
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[1].value
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[1].criticalValue
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[0].processingTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[0].consumptionTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[1].processingTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[1].consumptionTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[0].step
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[1].step
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: timeConsumptionNeeds
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[0].maxValue
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[1].maxValue
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[0].stepConsumption
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517004596, guid: 656e70e218391684fb506b6a789dd482, type: 3}
+      propertyPath: Needs.Array.data[1].stepConsumption
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4449638103965058616, guid: 656e70e218391684fb506b6a789dd482,
         type: 3}
       propertyPath: m_LocalPosition.x
