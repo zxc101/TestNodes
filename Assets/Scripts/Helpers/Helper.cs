@@ -7,10 +7,10 @@ namespace Helpers
     public class Helper
     {
         public static Vector3 helpVector;
-
+        
         public static float Percent(float max, int percent)
         {
-            float res = -1;
+            float res = 0;
             if (percent >= 0 && percent <= 100)
             {
                 res = percent * max / 100;

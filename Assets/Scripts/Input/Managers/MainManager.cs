@@ -30,18 +30,18 @@ namespace Inputs
 
         private void AddNewGoal(Vector2 mousePos)
         {
-            Vector3 wordPos;
+            Vector3 worldPos;
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 1000f))
             {
-                wordPos = hit.point;
+                worldPos = hit.point;
             }
             else
             {
-                wordPos = Camera.main.ScreenToWorldPoint(mousePos);
+                worldPos = Camera.main.ScreenToWorldPoint(mousePos);
             }
-            pet.Goals.AddFirst(Instantiate(goal, wordPos, Quaternion.identity, goalsBase));
+            pet.Goals.AddFirst(Instantiate(goal, worldPos, Quaternion.identity, goalsBase));
         }
     }
 }

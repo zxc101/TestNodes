@@ -28,7 +28,6 @@ namespace Pets
                 {
                     if (pet.Need != FindMinValInNeed() && !pet.AnimManager.IsNeed(pet.Need.name))
                     {
-                        Debug.Log("2");
                         pet.Need = FindMinValInNeed();
                         ChangeMainGoal(pet.Need.prefab);
                     }

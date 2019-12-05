@@ -29,6 +29,7 @@ namespace Pets
         public Stack<Vector3> Path { get; set; }
 
         [HideInInspector] public Need Need;
+        [HideInInspector] public Transform Transform;
 
         public float AngleToGoal => Goals.IsEmpty ? 0 : MathHelper.Angle(transform, Goals.First.position);
         
@@ -40,7 +41,6 @@ namespace Pets
         public float SpeedMove { get => speedMove; set { speedMove = value; Animator.SetFloat("Speed", value); } }
         public float SpeedRotate { get => speedRotate; set { speedRotate = value; Animator.SetFloat("Rotate", value); } }
 
-        public Transform Transform { get; private set; }
         public Animator Animator { get; private set; }
         public CapsuleCollider CapsuleCollider { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
